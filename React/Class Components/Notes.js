@@ -1,4 +1,4 @@
-//ENTER => COMPONENTS
+// ENTER => CLASS COMPONENTS
 
 //******** Class Component ********\\
 
@@ -169,16 +169,39 @@ class LightSwitch extends Component {
 export default LightSwitch;
 
 // turns the light off
-<button onClick={ () => { this.setState({ position: "Off" })}}> Flip Switch</button>
+<button onClick={() => { this.setState({ position: "Off" }) }}> Flip Switch</button>
 
 // turns the light on and off
 // this method goes inside of the LightSwitch Component
 flipSwitch = () => {
-    if( this.state.position === "On" ) {
-        this.setState({ position: "Off" });
-    } else {
-        this.setState({ position: "On" });
-    }
+    if (this.state.position === "On") {
+        this.setState({ position: "Off" });
+    } else {
+        this.setState({ position: "On" });
+    }
 }
 
-<button onClick={ this.flipSwitch }>Flip Switch</button>
+<button onClick={this.flipSwitch}>Flip Switch</button>
+
+
+//******** CSS Modules ********\\\
+
+
+//DIRECT IMPORT
+// MyButtonComponent.js
+import React, { Component } from 'react';
+import './styles.css';
+
+//CSS MODULES
+// MyButtonComponent.js
+import React, { Component } from 'react';
+import styles from './MyButtonComponent.module.css';
+
+
+class MyButton extends Component {
+    render() {
+        return <button className={styles.btn}>{props.children}</button>;
+    }
+}
+
+export default MyButton;
