@@ -39,13 +39,18 @@ class Effect extends Card {
     play(target) {
         var divide = "*"
         if (target instanceof Unit) {
-            if (this.stat == "res") {
-                target.res += this.magnitude
-            } else if (this.stat = "power") {
-                target.power += this.magnitude
+            if (target.res >= 0) {
+                if (this.stat == "res") {
+                    target.res += this.magnitude
+                } else if (this.stat = "power") {
+                    target.power += this.magnitude
+                } else {
+                    console.log("Effect needs either 'res' or 'power' as the last argument(stat)")
+                }
             } else {
-                console.log("Effect needs either 'res' or 'power' as the last argument(stat)")
+                console.log("Rest in peace")
             }
+
 
             // Print effect Results
             if (this.magnitude < 0 && this.stat == "res") {
@@ -68,7 +73,7 @@ class Effect extends Card {
 }
 
 // The Battle
-const ha = new Effect("Hard Algorithm", 2, 3, "res", "increase target's resilience by 3" )
+const ha = new Effect("Hard Algorithm", 2, 3, "res", "increase target's resilience by 3")
 const upr = new Effect("Unhandled Promise Rejection", 1, -2, "res", "reduce target's resilience by 2")
 const pp = new Effect("Pair Programming", 3, 2, "power", "increase target's power by 2")
 
