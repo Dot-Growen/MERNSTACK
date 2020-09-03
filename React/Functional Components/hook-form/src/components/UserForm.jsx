@@ -17,7 +17,7 @@ const UserForm = (props) => {
         <>
             <form className="mx-auto m-5 p-3 col-5 card " onSubmit={createUser}>
                 <div className="form-group">
-                    <label for="fName">First Name: </label>
+                    <label htmlFor="fName">First Name: </label>
                     <input id="fName" className="form-control" type="text" onChange={(e) => setFirstname(e.target.value)} />
                 </div>
                 <div className="form-group">

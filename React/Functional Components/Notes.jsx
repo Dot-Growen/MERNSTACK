@@ -155,55 +155,141 @@ const UserForm = (props) => {
                 <label>Password: </label>
                 <input type="text" onchange={(e) => setPassword(e.target.value)} />
             </div>
-            <input type="submit" value="Create User"/>
+            <input type="submit" value="Create User" />
         </form>
     );
 };
-    
+
 export default UserForm;
 
 // Alternate method with Ternary Operator for above form
-<form onsubmit={ createUser }>
+<form onsubmit={createUser}>
     {
-        hasBeenSubmitted ? 
-        <h3>Thank you for submitting the form!</h3> :
-        <h3>Welcome, please submit the form.</h3> 
+        hasBeenSubmitted ?
+            <h3>Thank you for submitting the form!</h3> :
+            <h3>Welcome, please submit the form.</h3>
     }
     <div>
-        <label>Username: </label> 
-        <input type="text" onchange={ (e) => setUsername(e.target.value) } />
+        <label>Username: </label>
+        <input type="text" onchange={(e) => setUsername(e.target.value)} />
     </div>
 </form>
 
 // Handling validation with Ternary Operator
 // Here we can use the fact that JavaScript will treat an empty string as being "falsy" to make our ternaries easier to write. 
 const MovieForm = (props) => {
-        const [title, setTitle] = useState("");
-        const [titleError, setTitleError] = useState(""); // empty string as being "falsy"
-        
-        const handleTitle = (e) => {
-            setTitle(e.target.value);
-            if(e.target.value.length < 1) { 
-                setTitleError("Title is required!"); 
-            } else if(e.target.value.length < 3) {
-                setTitleError("Title must be 3 characters or longer!");
-            }
-        }
-        
-        {/* rest of component removed for brevity */}
-        
-        return (
-            <form onsubmit={ (e) => e.preventDefault() }>
-                <div>
-                    <label>Title: </label>
-                    <input type="text" onChange={ handleTitle } />
-                    {
-                        titleError ?
-                        <p style={{color:'red'}}>{ titleError }</p> :
-                        '' 
-                    }
-                </div>
-                <input type="submit" value="Create Movie" />
-            </form>
-        );
+    const [title, setTitle] = useState("");
+    const [titleError, setTitleError] = useState(""); // empty string as being "falsy"
+
+    const handleTitle = (e) => {
+        setTitle(e.target.value);
+        if (e.target.value.length < 1) {
+            setTitleError("Title is required!");
+        } else if (e.target.value.length < 3) {
+            setTitleError("Title must be 3 characters or longer!");
+        }
     }
+
+    {/* rest of component removed for brevity */ }
+
+    return (
+        <form onsubmit={(e) => e.preventDefault()}>
+            <div>
+                <label>Title: </label>
+                <input type="text" onChange={handleTitle} />
+                {
+                    titleError ?
+                        <p style={{ color: 'red' }}>{titleError}</p> :
+                        ''
+                }
+            </div>
+            <input type="submit" value="Create Movie" />
+        </form>
+    );
+}
+
+
+//********* Iterating with map **********\\
+
+// the result of calling the map method is a new array; it doesn't change the original.
+
+let new_array = arr.map((currentValue, currentIndex, thisArray) => {
+    // transform the value here
+})
+
+// Example
+import React from 'react';
+const Groceries = (props) => {
+    // this could just as easily come from props
+    const groceryList = ["pearl onions", "thyme", "cremini mushrooms", "butter"];
+    return (
+        <ul>{
+            groceryList.map((item, i) =>
+                <li key={i}>{item}</li>
+            )
+        }</ul>
+    );
+}
+
+export default Groceries;
+
+
+//********* Lifting State **********\\
+
+// Where sending a function with the prop name "onNewMessage" from App.js to MessageForm
+// then MessageForm is using that prop to send back a value that's is now an input to youveGotMail 
+
+// App.js
+function App() {
+    const [currentMsg, setCurrentMsg] = useState("There are no messages");
+    
+    const youveGotMail = ( newMessage ) => {
+        setCurrentMsg( newMessage );
+    }
+    
+    return (
+        <>
+            <MessageForm onNewMessage={ youveGotMail } />
+            <MessageDisplay message={ currentmsg } />
+        </>
+    );
+}
+    
+
+
+// MessageForm.jsx
+const MessageForm = (props) => {
+    const [msg, setMsg] = useState([]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        props.onNewMessage(msg);
+    };
+
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <h1>Set Message</h1>
+            <textarea
+                rows="4"
+                cols="50"
+                placeholder="Enter your message here"
+                onChange={(e) => setMsg(e.target.value)}
+                value={msg}
+            ></textarea>
+            <input type="submit" value="Send Message" />
+        </form>
+    );
+};
+
+// MessageDisplay.jsx
+const MessageDisplay = (props) => {
+    return (
+        <>
+            <h1>Current Message</h1>
+            <p>{props.message}</p>
+        </>
+    );
+};
+
+// 
