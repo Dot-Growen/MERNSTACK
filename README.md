@@ -1,17 +1,19 @@
 # Coding-Dojo-MERN
 ## Lydell's course work from Coding Dojo's MERN stack including the following
 
-├─ MERN_STACK/ <br/>
-| ├─ JavaScript/<br/>
-| | ├─ Functional Programming & NPM/<br/>
-| | ├─ Fundamentals/<br/>
-| | ├─ OOP/<br/>
-| ├─ React/<br/>
-| | ├─ Class Components/<br/>
-| | ├─ Functional Components/<br/>
-| | ├─ Intro to React/<br/>
-| ├─ <br/>
-├─<br/>
+```
+├─ MERN_STACK/ 
+| ├─ JavaScript/
+| | ├─ Functional Programming & NPM/
+| | ├─ Fundamentals/
+| | ├─ OOP/
+| ├─ React/
+| | ├─ Class Components/
+| | ├─ Functional Components/
+| | ├─ Intro to React/
+| ├─ 
+├─
+```
 
 ### Technologies:
 * JavaScript
