@@ -1,5 +1,5 @@
 # Coding-Dojo-MERN
-## Lydell's course work from Coding Dojo's MERN stack including the following
+### My course work from Coding Dojo's MERN stack.
 
 ```
 ├─ MERN_STACK/ 

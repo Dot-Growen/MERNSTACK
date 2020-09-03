@@ -76,36 +76,134 @@ export default Counter;
 // To have form empty after submission put... <input type="text" onchange={ (e) => setUsername(e.target.value) } value={ username } /> then in createUser function... setUsername(""); to set it back to empty
 
 
-import React, { useState } from  'react';
-    
+import React, { useState } from 'react';
+
 const UserForm = (props) => {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");  
-    
-    const createUser = (e) => {
-        e.preventDefault();
-        const newUser = { username, email, password };
-        console.log("Welcome", newUser);
-    };
-    
-    return(
-        <form onSubmit={ createUser }>
-            <div>
-                <label>Username: </label> 
-                <input type="text" onChange={ (e) => setUsername(e.target.value) } />
-            </div>
-            <div>
-                <label>Email Address: </label> 
-                <input type="text" onChange={ (e) => setEmail(e.target.value) } />
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const createUser = (e) => {
+        e.preventDefault();
+        const newUser = { username, email, password };
+        console.log("Welcome", newUser);
+    };
+
+    return (
+        <form onSubmit={createUser}>
+            <div>
+                <label>Username: </label>
+                <input type="text" onChange={(e) => setUsername(e.target.value)} />
             </div>
-            <div>
+            <div>
+                <label>Email Address: </label>
+                <input type="text" onChange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div>
                 <label>Password: </label>
-                <input type="text" onChange={ (e) => setPassword(e.target.value) } />
+                <input type="text" onChange={(e) => setPassword(e.target.value)} />
             </div>
-            <input type="submit" value="Create User" />
-        </form>
-    );
+            <input type="submit" value="Create User" />
+        </form>
+    );
+};
+
+export default UserForm;
+
+
+//********* Conditional Rendering **********\\
+
+// By default, hasBeenSubmitted is false
+// When the form is submitted this value in state will be flipped to true
+
+
+import react, { useState } from 'react';
+
+const UserForm = (props) => {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [hasBeenSubmitted, setHasBeenSubmitted] = useState(false);
+
+    const createUser = (e) => {
+        e.preventDefault();
+        const newUser = { username, email, password };
+        console.log("Welcome", newUser);
+        setHasBeenSubmitted(true);
+    };
+
+    const formMessage = () => {
+        if (hasBeenSubmitted) {
+            return "Thank you for submitting the form!";
+        } else {
+            return "Welcome, please submit the form";
+        }
+    };
+
+    return (
+        <form onsubmit={createUser}>
+            <h3>{formMessage()}</h3>
+            <div>
+                <label>Username: </label>
+                <input type="text" onchange={(e) => setUsername(e.target.value)} />
+            </div>
+            <div>
+                <label>Email Address: </label>
+                <input type="text" onchange={(e) => setEmail(e.target.value)} />
+            </div>
+            <div>
+                <label>Password: </label>
+                <input type="text" onchange={(e) => setPassword(e.target.value)} />
+            </div>
+            <input type="submit" value="Create User"/>
+        </form>
+    );
 };
     
 export default UserForm;
+
+// Alternate method with Ternary Operator for above form
+<form onsubmit={ createUser }>
+    {
+        hasBeenSubmitted ? 
+        <h3>Thank you for submitting the form!</h3> :
+        <h3>Welcome, please submit the form.</h3> 
+    }
+    <div>
+        <label>Username: </label> 
+        <input type="text" onchange={ (e) => setUsername(e.target.value) } />
+    </div>
+</form>
+
+// Handling validation with Ternary Operator
+// Here we can use the fact that JavaScript will treat an empty string as being "falsy" to make our ternaries easier to write. 
+const MovieForm = (props) => {
+        const [title, setTitle] = useState("");
+        const [titleError, setTitleError] = useState(""); // empty string as being "falsy"
+        
+        const handleTitle = (e) => {
+            setTitle(e.target.value);
+            if(e.target.value.length < 1) { 
+                setTitleError("Title is required!"); 
+            } else if(e.target.value.length < 3) {
+                setTitleError("Title must be 3 characters or longer!");
+            }
+        }
+        
+        {/* rest of component removed for brevity */}
+        
+        return (
+            <form onsubmit={ (e) => e.preventDefault() }>
+                <div>
+                    <label>Title: </label>
+                    <input type="text" onChange={ handleTitle } />
+                    {
+                        titleError ?
+                        <p style={{color:'red'}}>{ titleError }</p> :
+                        '' 
+                    }
+                </div>
+                <input type="submit" value="Create Movie" />
+            </form>
+        );
+    }
