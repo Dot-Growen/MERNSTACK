@@ -1,0 +1,51 @@
+
+h1, h2, h3, h4, h5, h6, p, pre, blockquote, form, ul, ol, dl, div {
+    margin: 0px;
+    padding: 0px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.app{
+    width: 20em;
+    margin: 0em auto;
+}
+
+.tab-list {
+    text-align: center;
+    list-style-position: inside;
+}
+
+.tab-list-item {
+    display: inline-block;
+    list-style: none;
+    border: 1px rgb(195, 195, 195) solid;
+    margin-bottom: -1px;
+    padding: 0.5em 1.5em;
+    margin: .5em;
+    border-radius: .2em;
+}
+
+.tab-list-active {
+    display: inline-block;
+    list-style: none;
+    color: aliceblue;
+    border: solid rgb(48, 138, 255) 1px;
+    background-color: rgb(22, 22, 22);
+    padding: .5em 1.5em;
+    border-radius: .2em;
+    margin: .5em;
+    
+}
+
+.tab-content {
+    width: 17.8em;
+    padding: .7em;
+    margin: 0em auto;
+    height: 10em;
+    border:rgb(33, 148, 255) 1px solid;
+    color: black;
+    border-radius: .2em;
+}

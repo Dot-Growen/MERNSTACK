@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import './components/BoxDisplay'
-import './components/ColorForm'
-
 import ColorForm from './components/ColorForm';
 import BoxDisplay from './components/BoxDisplay';
 
@@ -17,7 +14,6 @@ function App() {
 
   return (
     <div className="app">
-
       <ColorForm onAdd={addColor} />
       {colors.map((boxColor, index) => {
         return (

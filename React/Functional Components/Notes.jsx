@@ -242,19 +242,19 @@ export default Groceries;
 // App.js
 function App() {
     const [currentMsg, setCurrentMsg] = useState("There are no messages");
-    
-    const youveGotMail = ( newMessage ) => {
-        setCurrentMsg( newMessage );
-    }
-    
+
+    const youveGotMail = (newMessage) => {
+        setCurrentMsg(newMessage);
+    }
+
     return (
         <>
-            <MessageForm onNewMessage={ youveGotMail } />
-            <MessageDisplay message={ currentmsg } />
-        </>
+            <MessageForm onNewMessage={youveGotMail} />
+            <MessageDisplay message={currentmsg} />
+        </>
     );
 }
-    
+
 
 
 // MessageForm.jsx
@@ -292,4 +292,19 @@ const MessageDisplay = (props) => {
     );
 };
 
-// 
+//********* Sending Arguments in Callbacks **********\\
+
+// when our onClickHandler function is invoked, it will only be provided with the event as its argument
+// So, we will need to send down a new callback function.
+// We have defined a new inline anonymous callback function that, when invoked, will then call our onClickHandler with the appropriate item.
+
+const MyComponent = props => {
+    const onClickHandler = (e, value) => {
+        alert(value);
+    }
+
+    return props.movies.map((item, index) => {
+        return <button onClick={(e) => onClickHandler(e, item)}>{item}</button>
+    });
+}
+
