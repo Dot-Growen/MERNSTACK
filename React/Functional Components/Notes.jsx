@@ -493,3 +493,33 @@ export default () => {
         <div>Current Time: {time}</div>
     );
 }
+
+//********* Axios **********\\\
+
+// npm install axios
+
+import axios from 'axios';
+
+axios.get('http://www.example.com').then(response=>{
+    console.log(response);
+})
+
+// with useEffect
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const someComponent = props => {
+    //Note the second argument is an empty array. We are only 
+    const [responseData, setResponseData] = useState(null);
+    useEffect(()=>{
+        axios.get('http://www.example.com')
+            .then(response=>{setResponseData(response.data)})
+    }, []); 
+    return(
+        <div>
+            {responseData}
+        </div>
+    )
+}
+
+
