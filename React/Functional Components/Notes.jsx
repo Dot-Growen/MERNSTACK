@@ -1,5 +1,7 @@
 //ENTER => FUNCTIONAL COMPONENTS
 
+// "rfc" =>
+
 //********* Functional Component **********\\
 
 import React from 'react';
@@ -340,5 +342,154 @@ export default function FruitForm() {
             </label>
             <button>Take a bite!</button>
         </form>
+    );
+}
+
+//********* Custom Hooks **********\\
+
+// Custom hooks allow us to take component logic that is used in multiple places and extract it for reuse
+// Notice that we didn't have to import React itself here since we're not rendering any JSX
+// ssume we would want a list of strings, a way to add to the list, and a way to remove from the list by index
+
+// useList.js
+import { useState } from 'react';
+
+export default (initialList = []) => {
+    const [list, setList] = useState(initialList);
+
+    function add(str) {
+        setList([...list, str]);
+    }
+
+    function remove(index) {
+        setList([
+            ...list.slice(0, index),
+            ...list.slice(index + 1)
+        ]);
+    }
+
+    return {
+        list,
+        add,
+        remove
+    };
+}
+
+import React, { useState } from 'react';
+import useList from './useList'; // Custom Hook
+
+export default () => {
+    const [val, setVal] = useState('');
+    const { list, add } = useList(['first', 'second']);
+
+    function handleSubmit() {
+        add(val);
+        setVal('');
+    }
+
+    return (
+        <>
+            {list.map((item, i) => <p key={i}>{item}</p>)}
+            <input
+                onChange={e => setVal(e.target.value)}
+                value={val}
+            />
+            <button onClick={handleSubmit}>Add</button>
+        </>
+    );
+}
+
+//********* Promises **********\\
+
+// Rejected: the outcome is completed with errors
+// Resolved: the outcome is completely successfully
+// Pending: the outcome is not yet determine
+
+// while the promise is unfulfilled any code that comes after it is free to run
+// We also have two distinct methods that get called where we handle the case where the promise is resolved .then() and the case where the promise is rejected .catch(). 
+
+const noMondays = new Promise((resolve, reject) => {
+    if (new Date().getDay() !== 1) {
+        resolve("Good, it's not Monday!");
+    } else {
+        reject("Someone has a case of the Mondays!");
+    }
+});
+noMondays
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+
+//********* Consuming API **********\\
+
+// The built-in method to consume data from an API in Javascript is fetch, which uses promises.
+// If you were to copy this into an html file yourself and then open it, you would see the Pokemon response in the Javascript console.
+
+fetch("https://pokeapi.co/api/v2/pokemon")
+    .then(response => {
+        return response.json();
+    }).then(response => {
+        console.log(response);
+    }).catch(err => {
+        console.log(err);
+    });
+
+//********* useEffect **********\\
+
+// We use useEffect in order to manage "side Effects" in our React project.
+// this method will execute directly after the component is rendered, and every time the component updates.
+// useEffect is a hook that will be called after every render 
+
+const Example = (props) => {
+    const [people, setPeople] = useState([]);
+
+    useEffect(() => {
+        fetch('https://swapi.dev/api/people/')
+            .then(response => response.json())
+            .then(response => setPeople(response.results))
+    }, []); // second arguement is empty so useEffect only run at the very first render
+
+    return (
+        <div>
+            {people.length > 0 && people.map((person, index) => {
+                return (<div key={index}>{person.name}</div>)
+            })}
+        </div>
+    );
+}
+export default Example;
+
+// useEffect will always run when a variable in the second argument array changes.
+
+const [tasks, setTasks] = useState([])
+
+useEffect(() => {
+    alert("When will this run?");
+}, [tasks]); // when task is updated use Effect will run
+
+// Cleaning up on unmounting
+
+// When the component is unmounted, as when the user changes to a different route, it is important to clean up so that your application doesn't develop a memory leak. 
+
+// cancelling subscriptions, timer, or removing event listners
+
+// TimeDisplay.js
+import React, { useEffect, useState } from 'react';
+
+export default () => {
+    const [time, setTime] = useState(new Date().toLocaleString());
+
+    useEffect(() => {
+        const int = setInterval(
+            () => setTime(new Date().toLocaleString()),
+            1000
+        );
+
+        return function clearInt() { // removing/ clearing up the ongoing timer
+            clearInterval(int);
+        }
+    }, []);
+
+    return (
+        <div>Current Time: {time}</div>
     );
 }

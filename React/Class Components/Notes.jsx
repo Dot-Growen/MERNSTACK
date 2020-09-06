@@ -183,6 +183,18 @@ flipSwitch = () => {
 
 <button onClick={this.flipSwitch}>Flip Switch</button>
 
+//******** Life Cycle ********\\\
+
+// Mounting
+//=> assigning state to a component
+//=> making Api Calls
+//=> html content rendered
+//=> network request, subscription, timer etc => componentDidMount()
+// Updating
+//=> This is a stage that will run every time we update the components state or properties.
+// Unmounting
+//=> This is the final stage in which React will unmount the component and remove it from the DOM.
+//=> This is the ideal place to cancel any on-going network requests, subscriptions, or clear timers.
 
 //******** CSS Modules ********\\\
 

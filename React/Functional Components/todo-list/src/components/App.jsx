@@ -7,6 +7,7 @@ import Footer from './Footer';
 function App() {
   const [tasks, setTasks] = useState([])
 
+
   const saveTask = (newTask) => {
     console.log(newTask)
     setTasks(preVTask => {
@@ -33,10 +34,8 @@ function App() {
     }
   }
 
-
   return (
     <div>
-      
       <div className="note-section">
         <CreateArea
           onAdd={saveTask}
