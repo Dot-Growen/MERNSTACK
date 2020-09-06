@@ -500,7 +500,7 @@ export default () => {
 
 import axios from 'axios';
 
-axios.get('http://www.example.com').then(response=>{
+axios.get('http://www.example.com').then(response => {
     console.log(response);
 })
 
@@ -509,17 +509,80 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const someComponent = props => {
-    //Note the second argument is an empty array. We are only 
-    const [responseData, setResponseData] = useState(null);
-    useEffect(()=>{
-        axios.get('http://www.example.com')
-            .then(response=>{setResponseData(response.data)})
-    }, []); 
-    return(
-        <div>
-            {responseData}
-        </div>
-    )
+    //Note the second argument is an empty array. We are only 
+    const [responseData, setResponseData] = useState(null);
+    useEffect(() => {
+        axios.get('http://www.example.com')
+            .then(response => { setResponseData(response.data) })
+    }, []);
+    return (
+        <div>
+            {responseData}
+        </div>
+    )
+}
+
+//********* React Router **********\\
+
+// npm install @reach/router
+// the path props tells react to go to the component LoginComponent with we go to the path /login
+
+
+import React from 'react';
+import { Router } from '@reach/router';
+function App() {
+    return (
+        <div className="App">
+            <Router>
+                <LoginComponent path="/login" />
+                <DashboardComponent path="/dashboard" />
+            </Router>
+        </div>
+    );
+}
+export default App;
+
+// LINK
+// <Link> component will not refresh the page. It will simply change the url and change the DOM.
+
+import React from 'react';
+import { Link } from '@reach/router';
+const NavBar = (props) => {
+    return (
+        <div>
+            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/login">Login</Link>
+        </div>
+    );
+}
+
+// NAVIGATE 
+// redirect a user to another page in your React project
+// import { navigate } from '@reach/router'
+// After performing some action, we can run a method such as navigate('/success'), and this will programmatically redirect the user to that front end route.
+
+
+// ROUTING WITH PARAMETERS
+// front end url parameters will be passed down as props to our component.
+
+function App() {
+    return (
+        <div className="App">
+            <Router>
+                <ListOfDogsComponent path="/dogs" />
+                <DetailDogComponent path="/dogs/:id" />
+            </Router>
+        </div>
+    )
+}
+
+// Then, within our Detail dog component:
+
+import React from 'react';
+const DetailDogComponent = props => {
+    return (
+        <p>You are looking at the dog with id = {props.id}</p>
+    )
 }
 
 
