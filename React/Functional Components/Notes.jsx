@@ -147,15 +147,15 @@ const UserForm = (props) => {
             <h3>{formMessage()}</h3>
             <div>
                 <label>Username: </label>
-                <input type="text" onchange={(e) => setUsername(e.target.value)} />
+                <input type="text" onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div>
                 <label>Email Address: </label>
-                <input type="text" onchange={(e) => setEmail(e.target.value)} />
+                <input type="text" onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div>
                 <label>Password: </label>
-                <input type="text" onchange={(e) => setPassword(e.target.value)} />
+                <input type="text" onChange={(e) => setPassword(e.target.value)} />
             </div>
             <input type="submit" value="Create User" />
         </form>

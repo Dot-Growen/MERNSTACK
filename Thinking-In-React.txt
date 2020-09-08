@@ -1,0 +1,25 @@
+Step 1: Break the UI into componenet hierarchy 
+- Use the single responsibility principle to decide what will be a component
+- Draw boxes around every componenet(and subcomponent)
+- Arrange components into a hierarchy
+
+Step 2: Build a static verision in react(renders your data model)
+- build a version that takes your data model and renders the UI but has no interactivity.
+- don't use state
+- top-down or bottom-up (it’s usually easier to go top-down, and on larger projects, it’s easier to go bottom-up and write tests as you build.)
+- At the end of this step, you’ll have a library of reusable components that render your data model.
+
+Step 3: Identifying the minimal (but complete) Representation of UI state
+- Figure out the absolute minimal representation of the mutable state your application needs and compute everything else you need on-demand.
+- Think of all of the pieces of data in your application and figure out which one is state:
+- ask the following question:
+    1. Is it passed in from a parent via props? If so, it probably isn’t state.
+    2. Does it remain unchanged over time? If so, it probably isn’t state.
+    3. Can you compute it based on any other state or props in your component? If so, it isn’t state.
+
+Step 4: Identify where your state should live.
+- For each piece of state in your application:
+    - Identify every component that renders something based on that state.
+    - Find a common owner component (a single component above all the components that need the state in the hierarchy).
+    - Either the common owner or another component higher up in the hierarchy should own the state.
+    - i f you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common owner component.
