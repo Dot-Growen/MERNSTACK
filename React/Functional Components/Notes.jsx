@@ -1,4 +1,4 @@
-//ENTER => FUNCTIONAL COMPONENTS
+// ENTER => FUNCTIONAL COMPONENTS
 
 // "rfc" =>
 
@@ -584,5 +584,74 @@ const DetailDogComponent = props => {
         <p>You are looking at the dog with id = {props.id}</p>
     )
 }
+
+//********* Use Context Hook **********\\
+
+// The Context API is built in with React, and it allows us to manage the "Global state" of a React application.
+// Context works by creating one location where we can hold data for our application
+
+
+// Start by creating a context object
+import { createContext } from 'react';
+// ...
+const MyContext = createContext(); // there is an option to add default context by passing it in as an argument to the createContext method
+
+// CONTEXT PROVIDER
+// The Context Provider is how we provide the information from our context to child components within our component tree.
+
+// import our context object and then wrap the Provider around the children components.
+// Now, every component within AppWrapperComponent will be able to access the value in our context.
+import React from 'react';
+import AppWrapperComponent from './AppWrapperComponent';
+import MyContext from './context/MyContext'; // Context file inside a context folder
+function App() {
+    return (
+        <div className="App">
+            <MyContext.Provider value={"context value"}>
+                <AppWrapperComponent>
+                </AppWrapperComponent>
+            </MyContext.Provider>
+        </div>
+    );
+}
+export default App;
+
+// USECONTEXT HOOK
+// The useContext hook is a way that we can actually access our context in other components.
+// 
+import React, { useContext } from 'react';
+import MyContext from './context/MyContext';
+const GreatGreatGreatGrandchildComponent = (props) => {
+    const context = useContext(MyContext);
+    return (
+        <div>
+            hello {context}
+        </div>
+    )
+}
+export default GreatGreatGreatGrandchildComponent;
+
+// CONTEXT WITH STATE
+
+// Now, in any child component, we have access to both the val, as well as the ability to call setVal
+import React from 'react';
+import AppWrapperComponent from './AppWrapperComponent';
+import NumContext from './context/NumContext';
+
+function App() {
+    const [val, setVal] = useState(1);
+
+    return (
+        <div className="App">
+            <NumContext.Provider value={{ val, setVal }}>
+                <AppWrapperComponent>
+                </AppWrapperComponent>
+            </NumContext.Provider>
+        </div>
+    );
+}
+
+export default App;
+
 
 

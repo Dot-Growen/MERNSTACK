@@ -1,4 +1,7 @@
-//ENTER => EXPRESS
+// ENTER => EXPRESS
+
+// Create a new express project
+// express --ejs
 
 // HTTP Methods
 
@@ -101,4 +104,48 @@ app.delete("/api/users/:id", (req, res) => {
 
 
 
-//****** install faker.js ******\\
+//****** Folder structure ******\\
+
+// server - will hold all server related files
+//// controllers - will hold all logic for each model (i.e creating, updating, etc...)
+//// models - will hold all the schemas
+//// routes - will handle all of our routes for each model
+//// server.js - will handle all the server logic with express
+
+//****** Modules ******\\
+
+// Make sure files are in the same directory using "./"(dot-slash)
+
+// EXPORTING CODE
+// within "my_modules.js"
+
+//Single exports
+module.exports.greet = function() {
+  console.log("Hello! We are exporting a function called Greet.");
+};
+
+module.exports.add = function(num1, num2) {
+  console.log("The sum is: ", num1 + num2);
+};
+
+//combined exports
+module.exports = {
+  greet: function() {
+    console.log("Hello! We are exporting a function called Greet.");
+  },
+  add: function(num1, num2) {
+    console.log("The sum is: ", num1 + num2);
+  }
+};
+
+
+//IMPORTING CODE
+const { greet, add } = require("./my_module");
+greet();
+add(5, 7);
+
+
+const myCustomModule = require("./my_module");
+myCustomModule.greet();
+myCustomModule.add(5, 7);
+
