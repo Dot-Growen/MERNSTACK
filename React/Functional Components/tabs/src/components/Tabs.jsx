@@ -17,7 +17,6 @@ function Tabs(props) {
     }
 
     return (
-
         <div>
             <ol className="tab-list">
                 {element.map((child) => {

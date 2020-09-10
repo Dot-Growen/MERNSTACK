@@ -349,7 +349,7 @@ export default function FruitForm() {
 
 // Custom hooks allow us to take component logic that is used in multiple places and extract it for reuse
 // Notice that we didn't have to import React itself here since we're not rendering any JSX
-// ssume we would want a list of strings, a way to add to the list, and a way to remove from the list by index
+// assume we would want a list of strings, a way to add to the list, and a way to remove from the list by index
 
 // useList.js
 import { useState } from 'react';
