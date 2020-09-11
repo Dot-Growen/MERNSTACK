@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from '@reach/router';
 import axios from 'axios';
 
 export default props => {
@@ -13,6 +14,9 @@ export default props => {
             <h4>Title: {product.title}</h4>
             <p>Price: ${product.price}</p>
             <p>Description: {product.description}</p>
+            <Link to={`/${product._id}/edit`} >
+                    Edit
+                </Link>
         </div>
     )
 }

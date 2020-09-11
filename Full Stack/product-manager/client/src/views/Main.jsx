@@ -14,11 +14,17 @@ export default () => {
                 setLoaded(true);
             })
     }, []);
+
+    const removeFromDom = productId => {
+        setProduct(product.filter(product => product._id !== productId));
+        console.log(product)
+    }
+
     return (
         <div>
             <ProductForm />
             <hr/>
-            {loaded && <ProductList product={product} />}
+            {loaded && <ProductList product={product} removeFromDom={removeFromDom} />}
         </div>
     )
 }

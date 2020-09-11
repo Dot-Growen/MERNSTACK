@@ -308,5 +308,157 @@ function App() {
 export default App;
 
 
+//******* Update *******\\
 
 
+app.put('/api/people/:id', PersonController.updatePerson); // Our route for the update api endpoint
+
+// server/controllers/person.controller.js => new method for updating
+module.exports.updatePerson = (request, response) => {
+    Person.findOneAndUpdate({ _id: request.params.id }, request.body, { new: true })
+        .then(updatedPerson => response.json(updatedPerson))
+        .catch(err => response.json(err))
+}
+
+// views/Update.js => A new view for updating the people in the database
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+export default props => {
+    const { id } = props;
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/people/' + id)
+            .then(res => {
+                setFirstName(res.data.firstName);
+                setLastName(res.data.lastName);
+            })
+    }, [])
+    const updatePerson = e => {
+        e.preventDefault();
+        axios.put('http://localhost:8000/api/people/' + id, {
+            firstName,
+            lastName
+        })
+            .then(res => console.log(res));
+    }
+    return (
+        <div>
+            <h1>Update a Person</h1>
+            <form onSubmit={updatePerson}>
+                <p>
+                    <label>First Name</label><br />
+                    <input type="text"
+                        name="firstName"
+                        value={firstName}
+                        onChange={(e) => { setFirstName(e.target.value) }} />
+                </p>
+                <p>
+                    <label>Last Name</label><br />
+                    <input type="text"
+                        name="lastName"
+                        value={lastName}
+                        onChange={(e) => { setLastName(e.target.value) }} />
+                </p>
+                <input type="submit" />
+            </form>
+        </div>
+    )
+}
+
+
+// App.js => Add Update with your other routes
+import React from 'react';
+import { Router } from '@reach/router';
+import Main from './views/Main';
+import Detail from './views/Detail';
+function App() {
+    return (
+        <div className="App">
+            <Router>
+                <Main path="people/" />
+                <Detail path="people/:id" />
+                <Update path="people/:id/edit" />
+            </Router>
+        </div>
+    );
+}
+export default App;
+
+// Detail.js => add a link to the edit page
+<Link to={"/" + person._id + "/edit"}>
+    Edit
+</Link>
+
+
+//******* Delete *******\\
+
+
+app.delete('/api/people/:id', PersonController.deletePerson); // Our route for the delete api endpoint
+
+// server/controllers/person.controller.js => new method for deleting
+module.exports.deletePerson = (request, response) => {
+    Person.deleteOne({ _id: request.params.id })
+        .then(deleteConfirmation => response.json(deleteConfirmation))
+        .catch(err => response.json(err))
+}
+
+// views/PersonList.js => With axios we added a onClik delete button that lifts the state with the person's Id to be delete to the Main.js
+import React from 'react';
+import axios from 'axios';
+import { Link } from '@reach/router';
+export default props => {
+    const { removeFromDom } = props;
+    const deletePerson = (personId) => {
+        axios.delete('http://localhost:8000/api/people/' + personId)
+            .then(res => {
+                removeFromDom(personId)
+            })
+    }
+    return (
+        <div>
+            {props.people.map((person, idx) => {
+                return <p key={idx}>
+                    <Link to={"/" + person._id}>
+                        {person.lastName}, {person.firstName}
+                    </Link>
+                    |
+                    <button onClick={(e) => { deletePerson(person._id) }}>
+                        Delete
+                    </button>
+                </p>
+            })}
+        </div>
+    )
+}
+
+
+// views/Main.js => Removing the person from the DOM by filtering the people array excluding the id that was passed through
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+import PersonForm from '../components/PersonForm';
+import PersonList from '../components/PersonList';
+export default () => {
+    const [people, setPeople] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/people')
+            .then(res => {
+                setPeople(res.data);
+                setLoaded(true);
+            });
+    }, []);
+
+    const removeFromDom = personId => {
+        setPeople(people.filter(person => person._id != personId));
+        
+    }
+
+    return (
+        <div>
+            <PersonForm />
+            <hr />
+            {loaded && <PersonList people={people} removeFromDom={removeFromDom} />}
+        </div>
+    )
+}
