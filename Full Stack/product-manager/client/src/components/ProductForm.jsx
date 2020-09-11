@@ -1,39 +1,41 @@
 import React, { useState } from 'react'
-import axios from 'axios';
-export default () => {
-
-    const [title, setTitle] = useState("");
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState("");
+export default (props) => {
+    const { initialTitle, initialPrice, initialDescription, onSubmitProp } = props;
+    const [title, setTitle] = useState(initialTitle);
+    const [price, setPrice] = useState(initialPrice);
+    const [description, setDescription] = useState(initialDescription);
 
 
     const onSubmitHandler = e => {
         e.preventDefault();
-        axios.post('http://localhost:8000/api/product/new', {
-            title,
-            price,
-            description
-        })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-            setTitle("")
-            setPrice("")
-            setDescription("")
+        onSubmitProp({title, price, description});
     }
 
     return (
-        <form className="" onSubmit={onSubmitHandler}>
+        <form onSubmit={onSubmitHandler}>
             <p>
                 <label>Title</label><br />
-                <input type="text" onChange={(e) => setTitle(e.target.value)} />
+                <input 
+                type="text" 
+                name="title" 
+                value={title}
+                onChange={(e) => setTitle(e.target.value)} />
             </p>
             <p>
                 <label>Price</label><br />
-                <input type="number" onChange={(e) => setPrice(e.target.value)} />
+                <input 
+                type="number" 
+                name="price" 
+                value={price} 
+                onChange={(e) => setPrice(e.target.value)} />
             </p>
             <p>
                 <label>Description</label><br />
-                <input type="text" onChange={(e) => setDescription(e.target.value)} />
+                <input 
+                type="text" 
+                name="description" 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} />
             </p>
             <input type="submit" />
         </form>

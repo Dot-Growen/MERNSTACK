@@ -6,7 +6,6 @@ import axios from 'axios';
 export default () => {
     const [product, setProduct] = useState([]);
     const [loaded, setLoaded] = useState(false);
-
     useEffect(() => {
         axios.get('http://localhost:8000/api')
             .then(res => {
@@ -14,15 +13,23 @@ export default () => {
                 setLoaded(true);
             })
     }, []);
-
     const removeFromDom = productId => {
         setProduct(product.filter(product => product._id !== productId));
         console.log(product)
     }
-
+    const createProduct = newProduct => {
+        axios.post('http://localhost:8000/api/product/new', newProduct)
+            .then(res => {
+                setProduct([...product, res.data])
+            })
+    }
     return (
         <div>
-            <ProductForm />
+            <ProductForm 
+            onSubmitProp={createProduct} 
+            initialTitle="" 
+            initialPrice={0} 
+            initialDescription=""  />
             <hr/>
             {loaded && <ProductList product={product} removeFromDom={removeFromDom} />}
         </div>
