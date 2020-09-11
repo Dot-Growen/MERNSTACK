@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from '@reach/router';
+import { Link, navigate } from '@reach/router';
 import axios from 'axios';
 
 export default props => {
@@ -9,14 +9,26 @@ export default props => {
             .then(res => setProduct(res.data))
             .then(console.log(props.id))
     }, [])
+
+    
+    const deleteProduct = (productId) => {
+        axios.delete('http://localhost:8000/api/' + productId)
+            .then(res => {
+                navigate('/')
+            })
+    }
+
     return (
         <div>
             <h4>Title: {product.title}</h4>
             <p>Price: ${product.price}</p>
             <p>Description: {product.description}</p>
             <Link to={`/${product._id}/edit`} >
-                    Edit
-                </Link>
+                Edit
+            </Link>
+            <button onClick={(e) => { deleteProduct(product._id) }}>
+                Delete
+            </button>
         </div>
     )
 }
