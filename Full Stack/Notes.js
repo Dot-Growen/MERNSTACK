@@ -8,6 +8,7 @@
 // npx create-react-app client
 // npm install cors
 // npm install axios
+// npm install @reach/router
 
 // SERVER SIDE FILE/FOLDER:
 // server
@@ -205,3 +206,107 @@ export default () => {
         </div>
     )
 }
+
+
+//******* List *******\\
+
+
+// A request to our api that will retrieve all of the people in our database for us.
+
+// server/controllers/person.controller.js
+module.exports.getAllPeople = (request, response) => {
+    Person.find({})
+        .then(persons => response.json(persons))
+        .catch(err => response.json(err))
+}
+
+// Add this to our routes => we can test with postman after to check if it went through
+app.get('/api/people', PersonController.getAllPeople);
+
+// components/PersonList.js => new components with the list of people
+import React from 'react'
+export default props => {
+    return (
+        <div>
+            {props.people.map((person, idx) => {
+                return <p key={idx}>{person.lastName}, {person.firstName}</p>
+            })}
+        </div>
+    )
+}
+
+// views/Main.js
+// setLoaded makes it so we only output a list of people once we got a response from our api.
+import React, { useEffect, useState } from 'react'
+import PersonForm from '../components/PersonForm';
+import PersonList from '../components/PersonList';
+import axios from 'axios';
+
+export default () => {
+    const [people, setPeople] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    useEffect(() => {
+        axios.get('http://localhost:8000/api/people')
+            .then(res => {
+                setPeople(res.data);
+                setLoaded(true);
+            });
+    }, [])
+    return (
+        <div>
+            <PersonForm />
+            <hr />
+            {loaded && <PersonList people={people} />}
+        </div>
+    )
+}
+
+//******* Details *******\\
+
+// server/controllers/person.controller.js => New method for getting the details from one person
+module.exports.getPerson = (request, response) => {
+    Person.findOne({ _id: request.params.id })
+        .then(person => response.json(person))
+        .catch(err => response.json(err))
+}
+
+// another route
+app.get('/api/people/:id', PersonController.getPerson);
+
+// views/Detail.js => new file for displaing the details of a person
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
+export default props => {
+    const [person, setPerson] = useState({})
+    useEffect(() => {
+        axios.get("http://localhost:8000/api/people/" + props.id)
+            .then(res => setPerson(res.data))
+    }, [])
+    return (
+        <div>
+            <p>First Name: {person.firstName}</p>
+            <p>Last Name: {person.lastName}</p>
+        </div>
+    )
+}
+
+// App.js => Since we have front end routing now run npm install @reach/router within your React project.
+import React from 'react';
+import { Router } from '@reach/router';
+import Main from './views/Main';
+import Detail from './views/Detail';
+function App() {
+    return (
+        <div className="App">
+            <Router>
+                <Main path="people/" />
+                <Detail path="people/:id" />
+            </Router>
+        </div>
+    );
+}
+export default App;
+
+
+
+

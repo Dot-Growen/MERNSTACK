@@ -1,12 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Router } from '@reach/router'
 import Main from './views/Main';
+import Detail from './views/Details'
 
 function App() {
   return (
     <div className="App">
-      <Main />
+      <Router>
+        <Main path="people/" />
+        <Detail path="people/:id" />
+      </Router>
     </div>
   );
 }
