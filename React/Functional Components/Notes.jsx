@@ -593,9 +593,10 @@ const DetailDogComponent = props => {
 
 // Start by creating a context object
 import { createContext } from 'react';
-// ...
+
 const MyContext = createContext(); // there is an option to add default context by passing it in as an argument to the createContext method
 
+export default MyContext
 // CONTEXT PROVIDER
 // The Context Provider is how we provide the information from our context to child components within our component tree.
 
@@ -653,5 +654,4 @@ function App() {
 
 export default App;
 
-
-
+//********* Render props **********\\

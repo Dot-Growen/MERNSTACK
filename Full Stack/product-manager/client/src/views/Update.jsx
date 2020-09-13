@@ -14,7 +14,7 @@ export default props => {
                 setProduct(res.data);
                 setLoaded(true)
             })
-    }, [])
+    },)
     const updateProduct = product => {
         axios.put('http://localhost:8000/api/' + id, product)
             .then(res => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, navigate } from '@reach/router';
 import axios from 'axios';
+import DeleteButton from '../components/DeleteButton';
 
 export default props => {
     const [product, setProduct] = useState({});
@@ -26,9 +27,9 @@ export default props => {
             <Link to={`/${product._id}/edit`} >
                 Edit
             </Link>
-            <button onClick={(e) => { deleteProduct(product._id) }}>
-                Delete
-            </button>
+            <DeleteButton
+                        productId={product._id}
+                        successCallback={() => navigate('/')} />
         </div>
     )
 }

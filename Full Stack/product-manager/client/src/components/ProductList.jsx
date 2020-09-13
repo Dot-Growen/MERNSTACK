@@ -4,14 +4,11 @@ import { Link } from '@reach/router'
 import DeleteButton from './DeleteButton';
 
 export default props => {
-    const [product, setProduct] = useState([]);
-    useEffect(() => {
-        axios.get('http://localhost:8000/api')
-            .then(res => setProduct(res.data))
-    }, []);
+    
+    const { removeDom, product } = props
 
     const removeFromDom = productId => {
-        setProduct(product.filter(product => product._id != productId))
+        removeDom(productId)
     }
 
     return (
@@ -23,7 +20,7 @@ export default props => {
                     </Link>
                     <Link to={`/${product._id}/edit`} >
                         Edit
-                        </Link>
+                    </Link>
                     <DeleteButton
                         productId={product._id}
                         successCallback={() => removeFromDom(product._id)} />

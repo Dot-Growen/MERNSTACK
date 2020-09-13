@@ -9,6 +9,7 @@
 // npm install cors
 // npm install axios
 // npm install @reach/router
+// npm install @material-ui/core
 
 // SERVER SIDE FILE/FOLDER:
 // server
@@ -423,7 +424,7 @@ export default props => {
                         {person.lastName}, {person.firstName}
                     </Link>
                     |
-                    <button onClick={(e) => { deletePerson(person._id) }}>
+                    <button  onClick={(e) => { deletePerson(person._id) }}>
                         Delete
                     </button>
                 </p>
@@ -462,3 +463,92 @@ export default () => {
         </div>
     )
 }
+
+
+
+//******* Validations *******\\
+
+
+// API that creates books
+// Both the title and number of pages is required.
+
+min: [6, 'Too few eggs'] // Numbers
+
+const BookSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: [
+            true,
+            "Title is required"
+        ]
+    },
+    numberOfPages: {
+        type: Number,
+        required: [
+            true,
+            "Pages is required"
+        ]
+    }    
+}, { timestamps: true });
+
+
+// controller.js
+// We are making this a 400 response so that our axios.post request will catch it as an error
+const Book = require('../models/book.model');
+module.exports = {
+    create: (request, response) => {
+        const { title, pages } = request.body;
+        Book.create({
+            title,
+            pages
+        })
+            .then(book => response.json(book))
+            .catch(err => response.status(400).json(err))
+    }
+}
+
+
+// We are going through our response to find all the errors if our response sends back a 400 response. If there are errors, we will render them via the map method.
+import React, { useState } from 'react';
+import axios from 'axios';
+export default function Main() {
+    const [title, setTitle] = useState("");
+    const [pages, setPages] = useState(0);
+    //Create an array to store errors from the API
+    const [errors, setErrors] = useState([]); 
+    const onSubmitHandler = e => {
+        e.preventDefault();
+        //Send a post request to our API to create a Book
+        axios.post('http://localhost:8000/books', {
+            title,
+            pages
+        })
+            .then(res=>console.log(res)) // If successful, do something with the response. 
+            .catch(err=>{
+                const errorResponse = err.response.data.errors; // Get the errors from err.response.data
+                const errorArr = []; // Define a temp error array to push the messages in
+                for (const key of Object.keys(errorResponse)) { // Loop through all errors and get the messages
+                    errorArr.push(errorResponse[key].message)
+                }
+                // Set Errors
+                setErrors(errorArr);
+            })            
+    }
+    return (
+        <div>
+            <form onSubmit={onSubmitHandler}>
+                {errors.map((err, index) => <p key={index}>{err}</p>)}
+                <p>
+                    <label>Title</label>
+                    <input type="text" onChange={e => setTitle(e.target.value)} />
+                </p>
+                <p>
+                    <label>Pages</label>
+                    <input type="text" onChange={e => setPages(e.target.value)} />
+                </p>
+                <input type="submit" />
+            </form>
+        </div>
+    )
+}
+
