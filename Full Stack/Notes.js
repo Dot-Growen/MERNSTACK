@@ -11,24 +11,25 @@
 // npm install @reach/router
 // npm install @material-ui/core
 
+import { Router } from '@reach/router';
+
 // SERVER SIDE FILE/FOLDER:
-// server
-/// config
+// server/
+/// config/
 //// mongoose.config.js
-/// controllers
+/// controllers/
 //// NAME.controller.js
-/// models
+/// models/
 //// NAME.model.js
-/// routes
+/// routes/
 //// NAME.routes.js
 //server.js
 
 // CLIENT SIDE:
 // client
 /// src
-//// components
-///// Persona
-//// views
+//// components/
+//// views/
 ///// Main.js
 
 // Hello World Set Up
@@ -118,10 +119,12 @@ mongoose.connect("mongodb://localhost/crmdb", {
 
 // models/ person.model.js
 const mongoose = require('mongoose');
+
 const PersonSchema = new mongoose.Schema({
     firstName: { type: String },
     lastName: { type: String }
 }, { timestamps: true });
+
 module.exports.Person = mongoose.model('Person', PersonSchema);
 
 // server.js
